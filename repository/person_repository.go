@@ -18,7 +18,8 @@ func NewPersonRepository(database *sql.DB) *PersonRepository {
 func (r *PersonRepository) CreateNewPerson(person *entity.Person) error {
 	query := `
 		INSERT INTO person(username, department) 
-		values ($1, $2)
+		VALUES ($1, $2)
+		RETURNING id
 	`
 
 	return r.database.QueryRow(
