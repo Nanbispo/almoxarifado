@@ -1,3 +1,5 @@
+package entity
+
 type Person struct {
 	ID          uint   `json:"id" gorm:"primaryKey"`
 	Name        string `json:"nome" binding:"required"`
