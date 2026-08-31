@@ -35,7 +35,6 @@ func (u *PersonUsecase) CreateNewPerson(person entity.Person) (entity.Person, er
 	return person, nil
 }
 
-
 func (u *PersonUsecase) DeletePerson(id int, personID int) (bool, error) {
 	if id <= 0 {
 		return false, errors.New("ID da pessoa precisa ser válido")
@@ -49,14 +48,12 @@ func (u *PersonUsecase) DeletePerson(id int, personID int) (bool, error) {
 	return deleted, nil
 }
 
-
-func (u * PersonUsecase) SearchForAllPerson () ([]entity.Person, error){
-
-	person, err := u.repository.SearchForAllPerson
+func (u *PersonUsecase) SearchForAllPerson() ([]entity.Person, error) {
+	person, err := u.repository.SearchForAllPerson()
 
 	if err != nil {
 		return nil, errors.New("Nenhum valor encontrado")
 	}
 
-	return person, ""
+	return person, nil
 }

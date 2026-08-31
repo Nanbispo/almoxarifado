@@ -45,8 +45,8 @@ func (r *PersonRepository) DeletePerson(id int, personID int) (bool, error) {
 	return rowsAffected > 0, nil
 }
 
-func (r *PersonRepository) SearchForAllPerson () ([]entity.Person, error) {
-	
+func (r *PersonRepository) SearchForAllPerson() ([]entity.Person, error) {
+
 	query := `SELECT id, name, department 
 				FROM person 
 			WHERE D_E_L_E_T_ = ''
@@ -65,11 +65,10 @@ func (r *PersonRepository) SearchForAllPerson () ([]entity.Person, error) {
 	for rows.Next() {
 		var person entity.Person
 
-
-		err := rows.Scan (
+		err := rows.Scan(
 			&person.ID,
 			&person.Name,
-			&person.Department
+			&person.Department,
 		)
 
 		if err != nil {
@@ -77,12 +76,12 @@ func (r *PersonRepository) SearchForAllPerson () ([]entity.Person, error) {
 		}
 
 		searchPerson = append(searchPerson, person)
-		
+
 	}
 
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
-	
+
 	return searchPerson, nil
 }
