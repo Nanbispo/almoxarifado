@@ -48,3 +48,15 @@ func (u *PersonUsecase) DeletePerson(id int, personID int) (bool, error) {
 
 	return deleted, nil
 }
+
+
+func (u * PersonUsecase) SearchForAllPerson () ([]entity.Person, error){
+
+	person, err := u.repository.SearchForAllPerson
+
+	if err != nil {
+		return nil, errors.New("Nenhum valor encontrado")
+	}
+
+	return person, ""
+}
