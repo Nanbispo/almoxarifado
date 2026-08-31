@@ -21,7 +21,6 @@ func (r *PersonRepository) CreateNewPerson(person *entity.Person) error {
 		VALUES ($1, $2)
 		RETURNING id
 	`
-
 	return r.database.QueryRow(
 		query,
 		person.Name,
@@ -32,7 +31,7 @@ func (r *PersonRepository) CreateNewPerson(person *entity.Person) error {
 
 func (r *PersonRepository) DeletePerson(id int, personID int) (bool, error) {
 
-	result, err := r.database.Exec("UPDATE person SET D_E_L_E_T_ = '*' WHERE id = ?", id)
+	result, err := r.database.Exec("UPDATE person SET D_E_L_E_T_ = '*', DATBLO = CURRENT_DATE WHERE id = ?", id)
 
 	if err != nil {
 		return false, err
@@ -43,7 +42,9 @@ func (r *PersonRepository) DeletePerson(id int, personID int) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-
 	return rowsAffected > 0, nil
+}
 
+func (r *PersonRepository) SearchForAll () (){
+	
 }
