@@ -45,6 +45,44 @@ func (r *PersonRepository) DeletePerson(id int, personID int) (bool, error) {
 	return rowsAffected > 0, nil
 }
 
-func (r *PersonRepository) SearchForAll () (){
+func (r *PersonRepository) SearchForAllPerson () ([]entity.Person, error) {
 	
+	query := `SELECT id, name, department 
+				FROM person 
+			WHERE D_E_L_E_T_ = ''
+  			AND DATBLO is null;`
+
+	rows, err := r.database.Query(query)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var searchPerson []entity.Person
+
+	for rows.Next() {
+		var person entity.Person
+
+
+		err := rows.Scan (
+			&person.ID,
+			&person.Name,
+			&person.Department
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		searchPerson = append(searchPerson, person)
+		
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+	
+	return searchPerson, nil
 }
