@@ -1,6 +1,12 @@
 package config
 
-func (pc *PersonController) RegisterRoutes(router gin.IRouter) {
+import (
+	"almoxarifado/controller"
+
+	"github.com/gin-gonic/gin"
+)
+
+func RegisterPersonRoutes(router gin.IRouter, pc *controller.PersonController) {
 	persons := router.Group("/persons")
 	persons.POST("", pc.CreateNewPerson)
 	persons.GET("", pc.SearchForAllPerson)
