@@ -17,7 +17,7 @@ func NewPersonRepository(database *sql.DB) *PersonRepository {
 
 func (r *PersonRepository) CreateNewPerson(person *entity.Person) error {
 	query := `
-		INSERT INTO person(username, department) 
+		INSERT INTO person(name, department) 
 		VALUES ($1, $2)
 		RETURNING id
 	`
@@ -49,8 +49,8 @@ func (r *PersonRepository) SearchForAllPerson() ([]entity.Person, error) {
 
 	query := `SELECT id, name, department 
 				FROM person 
-			WHERE D_E_L_E_T_ = ''
-  			AND DATBLO is null;`
+				WHERE (D_E_L_E_T_ = '' OR D_E_L_E_T_ IS NULL)
+  				AND DATBLO IS NULL;`
 
 	rows, err := r.database.Query(query)
 
