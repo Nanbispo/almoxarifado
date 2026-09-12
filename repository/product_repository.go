@@ -26,3 +26,19 @@ func (r *PersonRepository) CreateNewProduct(product *entity.Product) error {
 		product.Department,
 	).Scan(&product.ID)
 }
+
+func (r *ProductRepository) DeleteProduct(id int) (bool, error) {
+
+	result, err := r.database.Exec("UPDATE product SET D_E_L_E_T_ = '*', DATBLO = CURRENT_DATE WHERE id = ?", id)
+
+	if err != nil {
+		return false, err
+	}
+
+	rows, err := result.RowsAffected()
+
+	if err != nil {
+		return false, err
+	}
+	return rows > 0, nil
+}
