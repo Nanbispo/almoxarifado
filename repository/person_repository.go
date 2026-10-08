@@ -3,6 +3,7 @@ package repository
 import (
 	"almoxarifado/entity"
 	"database/sql"
+	"errors"
 )
 
 type PersonRepository struct {
@@ -84,4 +85,24 @@ func (r *PersonRepository) SearchForAllPerson() ([]entity.Person, error) {
 	}
 
 	return searchPerson, nil
+}
+
+func (r *PersonRepository) UpdatePerson(id int, person entity.Person) (entity.Person, error) {
+	query := `UPDATE person
+		SET name = $1, department = $2
+		WHERE id = $3
+		  AND (D_E_L_E_T_ = '' OR D_E_L_E_T_ IS NULL)
+		  AND DATBLO IS NULL
+		RETURNING id, name, department`
+
+	err := r.database.QueryRow(query, person.Name, person.Department, id).Scan(
+		&person.ID, &person.Name, &person.Department,
+	)
+	if errors.Is(err, sql.ErrNoRows) {
+		return entity.Person{}, errors.New("pessoa não encontrada")
+	}
+	if err != nil {
+		return entity.Person{}, err
+	}
+	return person, nil
 }

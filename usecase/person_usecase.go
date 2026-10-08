@@ -57,3 +57,24 @@ func (u *PersonUsecase) SearchForAllPerson() ([]entity.Person, error) {
 
 	return person, nil
 }
+
+func (u *PersonUsecase) UpdatePerson(id int, person entity.Person) (entity.Person, error) {
+	if id <= 0 {
+		return entity.Person{}, errors.New("ID da pessoa precisa ser válido")
+	}
+
+	if person.Name == "" {
+		return entity.Person{}, errors.New("O nome do usuário não pode ser vazio")
+	}
+
+	if person.Department == "" {
+		return entity.Person{}, errors.New("O usuário precisa possuir um departamento")
+	}
+
+	person.ID = uint(id)
+	updatedPerson, err := u.repository.UpdatePerson(id, person)
+	if err != nil {
+		return entity.Person{}, err
+	}
+	return updatedPerson, nil
+}

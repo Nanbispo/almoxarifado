@@ -15,6 +15,33 @@ type PersonService interface {
 	CreateNewPerson(entity.Person) (entity.Person, error)
 	DeletePerson(id int, personID int) (bool, error)
 	SearchForAllPerson() ([]entity.Person, error)
+	UpdatePerson(id int, person entity.Person) (entity.Person, error)
+}
+
+// UpdatePersonController handles PUT /persons/:id.
+func (pc *PersonController) UpdatePersonController(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil || id <= 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "id deve ser um número positivo"})
+		return
+	}
+
+	var person entity.Person
+	if err := c.ShouldBindJSON(&person); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	updatedPerson, err := pc.personUsecase.UpdatePerson(id, person)
+	if err != nil {
+		if err.Error() == "pessoa não encontrada" {
+			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, updatedPerson)
 }
 
 type PersonController struct {
@@ -26,7 +53,6 @@ func NewPersonController(personUsecase PersonService) *PersonController {
 }
 
 // RegisterRoutes registers the person resource endpoints under /persons.
-
 
 // CreateNewPerson handles POST /persons.
 func (pc *PersonController) CreateNewPerson(c *gin.Context) {
