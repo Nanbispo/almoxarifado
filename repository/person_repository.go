@@ -31,7 +31,7 @@ func (r *PersonRepository) CreateNewPerson(person *entity.Person) error {
 
 func (r *PersonRepository) DeletePerson(id int, personID int) (bool, error) {
 
-	result, err := r.database.Exec("UPDATE person SET D_E_L_E_T_ = '*', DATBLO = CURRENT_DATE WHERE id = ?", id)
+	result, err := r.database.Exec("UPDATE person SET D_E_L_E_T_ = '*', DATBLO = CURRENT_DATE WHERE id = $1", id)
 
 	if err != nil {
 		return false, err
