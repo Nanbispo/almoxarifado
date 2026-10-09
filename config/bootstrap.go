@@ -14,8 +14,13 @@ func InitializeApp(database *sql.DB) (*gin.Engine, error) {
 	personUsecase := usecase.NewPersonUsecase(personRepo)
 	personController := controller.NewPersonController(personUsecase)
 
+	productRepo := repository.NewProductRepository(database)
+	productUsecase := usecase.NewProductUsecase(productRepo)
+	productController := controller.NewProductController(productUsecase)
+
 	router := gin.Default()
 	RegisterPersonRoutes(router, personController)
+	RegisterProductRoutes(router, productController)
 
 	return router, nil
 }

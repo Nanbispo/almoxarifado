@@ -27,6 +27,10 @@ func (u *ProductUsecase) CreateNewProduct(product entity.Product) (entity.Produc
 	return product, nil
 }
 
+func (u *ProductUsecase) SearchForAllProduct() ([]entity.Product, error) {
+	return u.repository.SearchForAllProduct()
+}
+
 func (u *ProductUsecase) DeleteProduct(id int) (bool, error) {
 	if id <= 0 {
 		return false, errors.New("ID do produto precisa ser válido")
